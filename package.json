@@ -1,0 +1,13 @@
+{
+  "name": "uniquifyLeads",
+  "version": "0.0.0",
+  "description": "Produces a set of unique (id, email) JSON records from a JSON file source of Leads.",
+  "private": true,
+  "scripts": {
+    "start": "node ./bin/www"
+  },
+  "dependencies": {
+    "commander": "^2.15.1",
+    "inquirer": "^5.2.0"
+  }
+}
