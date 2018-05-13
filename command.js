@@ -7,7 +7,7 @@ program
     .arguments('<inputFile> [outputFile]')
     .action((inputFile, outputFile) => {
         inputPath = inputFile;
-        outputPath = outputFile;
+        outputPath = outputFile || inputFile.substring(0,inputFile.lastIndexOf("/")+1);
     });
 
 program.parse(process.argv);
@@ -17,6 +17,7 @@ if (typeof inputPath === 'undefined') {
     process.exit(1);
 }
 
+app.setExitHandler(process.exit);
 app.message('Start');
 app.parseLeads(inputPath, outputPath);
 app.message('Complete');
