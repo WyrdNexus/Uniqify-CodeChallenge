@@ -20,4 +20,3 @@ if (typeof inputPath === 'undefined') {
 app.setExitHandler(process.exit);
 app.message('Start');
 app.parseLeads(inputPath, outputPath);
-app.message('Complete');
