@@ -1,31 +1,33 @@
+const cmdUI = require('./cmd_ui');
+const fileManager = require('./file_manager');
 const uniqify = require('./uniqify');
-
-let exitHandler = null;
 
 class App
 {
     static parseLeads(inputFile, outputFile) {
-        console.log(inputFile,outputFile);
-        //todo: fileAccess
-        //todo: uniqifyData
-    }
-
-    static exit(code) {
-        if (typeof exitHandler === 'function') {
-            exitHandler(code);
-        }
+        fileManager.loadSource(inputFile, function(data){
+            if (data.leads) {
+                cmdUI.message('Uniqifying Leads Data');
+                let cleanData = uniqify.parseObjectArray(data.leads);
+                console.log(cleanData);
+            }
+        });
     }
 
     static error(msg) {
-        console.warn(msg);
+        cmdUI.error(msg);
     }
 
     static message(msg) {
-        console.log(msg);
+        cmdUI.message(msg);
+    }
+
+    static prompt(msg, aryChoices, callback) {
+        cmdUI.prompt(msg, aryChoices, callback);
     }
 
     static setExitHandler(handler) {
-        exitHandler = handler;
+        cmdUI.setExitHandler(handler);
     }
 }
 
