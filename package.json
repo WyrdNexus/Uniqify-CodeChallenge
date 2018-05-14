@@ -1,6 +1,6 @@
 {
   "name": "uniquifyLeads",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "Produces a set of unique (id, email) JSON records from a JSON file source of Leads.",
   "private": true,
   "scripts": {
