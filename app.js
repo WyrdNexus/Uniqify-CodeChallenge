@@ -23,6 +23,10 @@ class App
                         );
                         cmdUI.promptUniqifyAction(actions);
                     },
+                    view_output_data: () => {
+                        cmdUI.message(JSON.stringify({leads: uniqueResults.output}, null, 4));
+                        cmdUI.promptUniqifyAction(actions);
+                    },
                     write_output_file: () => {
                         const finalData = {
                             leads: uniqueResults.output

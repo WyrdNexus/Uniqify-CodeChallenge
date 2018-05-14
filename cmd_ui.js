@@ -44,6 +44,7 @@ class CmdUI
                 choices: [
                     'Abort',
                     'View Transactions',
+                    'View Output Data',
                     'Write Output File'
                 ],
                 filter: function(val) {

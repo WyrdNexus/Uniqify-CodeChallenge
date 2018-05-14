@@ -20,7 +20,7 @@ class FileManager
     }
 
     static writeResult(path, data, done) {
-        fs.writeFile(path, JSON.stringify(data), function(e) {
+        fs.writeFile(path, JSON.stringify(data, null, 4), function(e) {
             if(e) {
                 cmdUI.exit(e.message || 'Error writing output data.');
             }
