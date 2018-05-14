@@ -21,7 +21,6 @@ Please implement as a command-line java program, or a javascript program.
 ## Installation
 
 Requires [Node.js](https://nodejs.org/) and [git](https://git-scm.com/)
-***TODO:clone URL***
 
 ```
 > git clone
@@ -31,10 +30,9 @@ Requires [Node.js](https://nodejs.org/) and [git](https://git-scm.com/)
 ## Operation
 
 ```
-Usage: command [options] <inputFile> [outputFile]
-> node command.js leads ./data/leads.json 
+Usage: <inputFile> [outputFile]
+> node command.js ./data/leads.json [./data/unique_leads.json]
 ``` 
-- **command:** only the *leads* command is defined.
 - **inputFile:** full or relative path to the sourse JSON file.
 - **outputFile:** (optional) full or relative path of a directory for the resulting file.
     - defaults to the directory of the sourceFile.
