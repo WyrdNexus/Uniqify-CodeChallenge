@@ -62,10 +62,6 @@ class App
         cmdUI.message(msg);
     }
 
-    static prompt(msg, aryChoices, callback) {
-        cmdUI.prompt(msg, aryChoices, callback);
-    }
-
     static setExitHandler(handler) {
         cmdUI.setExitHandler(handler);
     }
