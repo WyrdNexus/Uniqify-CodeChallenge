@@ -34,17 +34,33 @@ class CmdUI
         coreUI.notify(msg);
     }
 
-    static prompt(msg, aryChoices, callback) {
+    static promptUniqifyAction(handlers) {
+        const pName = 'uniqify_action';
         inquirer
             .prompt([{
-                type: 'expand',
-                message: msg+': ',
-                choices: aryChoices
+                type: 'list',
+                name: pName,
+                message: 'How would you like to proceed? ',
+                choices: [
+                    'Abort',
+                    'View Transactions',
+                    'Write Output File'
+                ],
+                filter: function(val) {
+                    return val.toLowerCase().replace(' ', '_');
+                }
             }])
-            .then(callback);
-            // .then(answers => {
-            //     console.log(JSON.stringify(answers, null, '  '));
-            // });
+            .then(answer => {
+                if (answer[pName] && handlers[answer[pName]]) {
+                    handlers[answer[pName]]();
+                } else {
+                    throw new ReferenceError('Unhandled choice '+answer[pName]+' in '+ pName);
+                }
+            });
+    }
+
+    static displayCollection(array) {
+
     }
 
     static exit(msg, code = 99) {

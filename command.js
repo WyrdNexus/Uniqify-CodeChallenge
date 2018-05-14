@@ -18,5 +18,5 @@ if (typeof inputPath === 'undefined') {
 }
 
 app.setExitHandler(process.exit);
-app.message('Start');
+app.message('Starting Leads Parsing');
 app.parseLeads(inputPath, outputPath);
