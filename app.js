@@ -1,6 +1,6 @@
 const cmdUI = require('./cmd_ui');
 const fileManager = require('./file_manager');
-const { Uniqify, Result }= require('./uniqify');
+const Uniqify = require('./uniqify');
 
 class App
 {
@@ -8,8 +8,8 @@ class App
         fileManager.loadSource(inputFile, function(data){
             if (data.leads) {
                 cmdUI.message('Uniqifying Leads Data');
-                let cleanData = Uniqify.parseObjectArray(data.leads);
-                console.log(cleanData.output);
+                let uniqueResults = new Uniqify('leads', data.leads);
+                console.log(uniqueResults.output);
                 cmdUI.exit('Complete',0);
             }
         });
