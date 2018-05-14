@@ -16,7 +16,11 @@ class App
                         cmdUI.exit('Aborted', 0);
                     },
                     view_transactions: () => {
-                        console.log(uniqueResults.transactions);
+                        cmdUI.message(
+                            '\n'+indent+'Transactions on Source Data\n' +
+                            indent+'==================================\n'+
+                            uniqueResults.transactions.join('\n\n')
+                        );
                         cmdUI.promptUniqifyAction(actions);
                     },
                     write_output_file: () => {

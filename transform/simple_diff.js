@@ -3,8 +3,10 @@ class SimpleDiff
     constructor(a, b) {
         this.diffs = {};
         for(let prop in a) {
+            if (prop === 'sourceKey') continue;
+
             if (b[prop] && a[prop] !== b[prop]) {
-                this.diffs[prop] = a[prop] +' > '+ b[prop]+ '\n';
+                this.diffs[prop] = a[prop] +' --> '+ b[prop]+ '\n';
             }
         }
     }
@@ -13,7 +15,7 @@ class SimpleDiff
 SimpleDiff.prototype.toString = function() {
     let result = '';
     for(let prop in this.diffs) {
-        result += prop +': '+ this.diffs[prop] +',';
+        result += prop +': '+ this.diffs[prop];
     }
 
     return result.substring(0, result.length - 1);

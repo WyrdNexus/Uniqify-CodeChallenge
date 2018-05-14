@@ -89,8 +89,7 @@ class AbstractTransform
             this.update(existing, objectInstance);
 
             // log transaction
-            // todo: cleaner handling and reporting of diff
-            return 'Updated '+ keyName + ' '+ new SimpleDiff(existing, objectInstance);
+            return 'Updated '+ keyName + '\n'+ new SimpleDiff(existing, objectInstance);
 
         } else {
             // record event on source index
