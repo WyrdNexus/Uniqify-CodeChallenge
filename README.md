@@ -1,8 +1,8 @@
 # Coding Challenge
 
-Short command-line Node.js application for unqifiying a json array of objects.  
+Short command-line Node.js application for uniqifiying a json array of objects.  
 
-## Challenge Sumamry
+## Challenge Summary
 
 Take a variable number of identically structured json records and de-duplicate the set.
 
