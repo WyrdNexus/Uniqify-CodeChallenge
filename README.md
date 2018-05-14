@@ -43,6 +43,10 @@ Usage: command [options] <inputFile> [outputFile]
 - Must be valid JSON.
 - Must be UTF8 encoded.
 - Must exist and be accessible by node.
+- Must contain a property named 'leads' containing an array of objects
+- leads objects must have:
+    - _id
+    - email
 
 ### outputFile Requirements:
 - Must be an existing directory.
