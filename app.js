@@ -11,6 +11,21 @@ class App
                 cmdUI.message('Uniqifying Leads Data');
                 let uniqueResults = new Uniqify('leads', data.leads);
 
+                // Initial Report of Results
+                cmdUI.message(
+                    '\n'+indent+'OVERVIEW of Actions on Source Data\n' +
+                    indent+'==================================\n'+indent +
+                    uniqueResults.overview.join('\n'+indent)
+                );
+                cmdUI.message(
+                    '\n'+indent+'Resulting Emails in Data\n' +
+                    indent+'========================\n' +
+                    uniqueResults.output.map(function (el) {
+                        return indent+el.email || indent+'EMAIL MISSING!';
+                    }).join('\n')
+                );
+
+                // handler methods for prompt choices
                 const actions = {
                     abort: () => {
                         cmdUI.exit('Aborted', 0);
@@ -37,18 +52,6 @@ class App
                     },
                 };
 
-                cmdUI.message(
-                    '\n'+indent+'OVERVIEW of Actions on Source Data\n' +
-                    indent+'==================================\n'+indent +
-                    uniqueResults.overview.join('\n'+indent)
-                );
-                cmdUI.message(
-                    '\n'+indent+'Resulting Emails in Data\n' +
-                    indent+'========================\n' +
-                    uniqueResults.output.map(function (el) {
-                        return indent+el.email || indent+'EMAIL MISSING!';
-                    }).join('\n')
-                );
                 cmdUI.promptUniqifyAction(actions);
             }
         });

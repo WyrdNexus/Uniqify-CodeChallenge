@@ -36,17 +36,20 @@ class CmdUI
 
     static promptUniqifyAction(handlers) {
         const pName = 'uniqify_action';
+        let choices = [];
+        for(let prop in handlers) {
+            // uc first
+            choices.push(prop.replace(/_/g,' ').replace(/^(.)|\s+(.)/g, function ($1) {
+                return $1.toUpperCase()
+            }));
+        }
+
         inquirer
             .prompt([{
                 type: 'list',
                 name: pName,
                 message: 'How would you like to proceed? ',
-                choices: [
-                    'Abort',
-                    'View Transactions',
-                    'View Output Data',
-                    'Write Output File'
-                ],
+                choices: choices,
                 filter: function(val) {
                     return val.toLowerCase().replace(/\s/g, '_');
                 }
