@@ -4,7 +4,7 @@ class SimpleDiff
         this.diffs = {};
         for(let prop in a) {
             if (b[prop] && a[prop] !== b[prop]) {
-                this.diffs[prop] = a[prop] +' > '+ b[prop];
+                this.diffs[prop] = a[prop] +' > '+ b[prop]+ '\n';
             }
         }
     }

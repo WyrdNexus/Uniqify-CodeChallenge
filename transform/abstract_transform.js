@@ -1,4 +1,8 @@
 const SimpleDiff = require('./simple_diff');
+const STR_REM  = 'Duplicate Removed          :';
+const STR_OVER = 'Overwrote Prior Duplicate  :';
+const STR_SAME = 'Original Preserved         :';
+
 
 /**
  * AbstractTransform
@@ -18,7 +22,8 @@ const SimpleDiff = require('./simple_diff');
  *        calls child.transform( existing, new ) to restructure result data
  *
  *        upserts result into this.output[]
- *        tracks update changes in this.changes[]
+ *        tracks inserts and updates transactions in this.transactions[]
+ *        records action taken for each entry in arg1 in this.overview[]
  *
  */
 class AbstractTransform
@@ -42,7 +47,15 @@ class AbstractTransform
 
         this.source = array;
         this.output = [];
-        this.changes = this.source.map(this.clean);
+        this.overview = [];
+        this.transactions = this.source.map(this.clean);
+
+        // clean adds a 'sourceKey' property to the objects
+        // for use in creating the overview of changes to the source.
+        // remove it before finishing.
+        this.output.forEach(function(el){
+            delete el.sourceKey;
+        });
     }
 
     // generate a user-friendly name for an object
@@ -61,17 +74,32 @@ class AbstractTransform
         return objA._id === objB._id;
     }
 
-    clean(objectInstance) {
+    clean(objectInstance, i) {
         let keyName = this.objectKeyName(objectInstance);
         let existing = this.findByIdentity(objectInstance); // calls child.identify
         objectInstance = this.transform(existing, objectInstance); // eg.: child.transform
+        objectInstance.sourceKey = i;
 
         if (typeof existing === 'object') {
+            // record event on source index
+            this.overview[existing.sourceKey] = STR_REM + this.objectKeyName(existing);
+            this.overview[i] = STR_OVER + this.objectKeyName(objectInstance);
+
+            // execute update transaction
             this.update(existing, objectInstance);
+
+            // log transaction
             // todo: cleaner handling and reporting of diff
             return 'Updated '+ keyName + ' '+ new SimpleDiff(existing, objectInstance);
+
         } else {
+            // record event on source index
+            this.overview[i] = STR_SAME + this.objectKeyName(objectInstance);
+
+            // execute insert transaction
             this.insert(objectInstance);
+
+            // log transaction
             return 'Added '+ keyName;
         }
     }

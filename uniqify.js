@@ -14,8 +14,12 @@ class Uniqify
         return this.transformedData.output;
     }
 
-    get changes() {
-        return this.transformedData.changes;
+    get overview() {
+        return this.transformedData.overview;
+    }
+
+    get transactions() {
+        return this.transformedData.transactions;
     }
 
     get source() {
