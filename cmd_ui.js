@@ -63,8 +63,30 @@ class CmdUI
             });
     }
 
-    static displayCollection(array) {
+    static details(transformDetailedOverview) {
+        const padRight = (s, n) => s + ' '.repeat(n - s.length); // String.padEnd is missing from my v of Node!?
 
+        for (let key in transformDetailedOverview) {
+            let entry = transformDetailedOverview[key];
+
+            console.log(
+                '\n\n'+entry.source._id +' '+entry.message+'\n'+
+                '--------------------------------------'
+            );
+
+            for( let prop in entry.source) {
+                if (prop === 'entryDate' || prop === 'sourceKey') continue;
+                let line = '    '+ padRight(prop, 20) +': ';
+                if (entry.source[prop]) {
+                    line += padRight(entry.source[prop], 20);
+
+                    if (entry.output && entry.output[prop]) {
+                        line += ' --> '+ entry.output[prop];
+                    }
+                }
+                console.log(line);
+            }
+        }
     }
 
     static exit(msg, code = 99) {

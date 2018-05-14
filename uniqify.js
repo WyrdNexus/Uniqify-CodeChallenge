@@ -15,6 +15,13 @@ class Uniqify
     }
 
     get overview() {
+        return this.transformedData.overview.map((entry) => {
+            return entry.message;
+        });
+    }
+
+    get detailedOverview() {
+
         return this.transformedData.overview;
     }
 

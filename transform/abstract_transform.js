@@ -1,7 +1,7 @@
 const SimpleDiff = require('./simple_diff');
-const STR_REM  = 'Duplicate Removed          :';
-const STR_OVER = 'Overwrote Prior Duplicate  :';
-const STR_SAME = 'Original Preserved         :';
+const OVERVIEW_REM  = -1;
+const OVERVIEW_OVER = 1;
+const OVERVIEW_SAME = 0;
 
 
 /**
@@ -87,12 +87,12 @@ class AbstractTransform
         }
 
         objectInstance = this.transform(existing, objectInstance); // eg.: child.transform
-        objectInstance.sourceKey = i;
+        objectInstance.sourceKey = existingKey;
 
         if (typeof existing === 'object') {
             // record event on source index
-            this.overview[existingKey] = STR_REM + this.objectKeyName(existing);
-            this.overview[i] = STR_OVER + this.objectKeyName(objectInstance);
+            // this.trackOverview(existingKey, objectInstance, OVERVIEW_REM);
+            this.trackOverview(i, objectInstance, OVERVIEW_OVER);
 
             let log = 'Updated '+ keyName + '\n'+ new SimpleDiff(existing, objectInstance);
 
@@ -104,7 +104,7 @@ class AbstractTransform
 
         } else {
             // record event on source index
-            this.overview[i] = STR_SAME + this.objectKeyName(objectInstance);
+            this.trackOverview(i, objectInstance, OVERVIEW_SAME);
 
             // execute insert transaction
             this.insert(objectInstance);
@@ -128,6 +128,41 @@ class AbstractTransform
     update(key, tgt, data) {
         // todo: warn on overwrite of key-fields (_id, email) OOS for Challenge
         this.output[key] = Object.assign(tgt, data);
+    }
+
+    trackOverview(key, obj, action) {
+        let message = '';
+        switch (action) {
+            case OVERVIEW_REM:  message = 'Duplicate Removed          :'; break;
+            case OVERVIEW_OVER: message = 'Overwrote Prior Duplicate  :'; break;
+            case OVERVIEW_SAME: message = 'Original Preserved         :'; break;
+            default:            message = 'UNKNOWN ACTION             :'; break;
+        }
+
+        if (typeof this.overview[key] === 'undefined') {
+            this.overview[key] = {
+                source: obj,
+            };
+        } else {
+            this.overview[key].output = obj;
+        }
+
+        this.overview[key].message = message + this.objectKeyName(obj);
+        this.overview[key].state = action;
+
+        if (action === OVERVIEW_OVER) {
+            if (typeof this.overview[key].parent === 'number') {
+                this.trackOverview(this.overview[key].parent, obj, OVERVIEW_REM);
+            }
+
+            if (typeof obj.sourceKey === 'number') {
+                let parentKey = obj.sourceKey;
+                delete obj.sourceKey;
+
+                this.trackOverview(parentKey, obj, OVERVIEW_REM);
+                this.overview[key].parent = parentKey;
+            }
+        }
     }
 }
 

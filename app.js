@@ -38,6 +38,10 @@ class App
                         );
                         cmdUI.promptUniqifyAction(actions);
                     },
+                    view_changes: () => {
+                        cmdUI.details(uniqueResults.detailedOverview);
+                        cmdUI.promptUniqifyAction(actions);
+                    },
                     view_output_data: () => {
                         cmdUI.message(JSON.stringify({leads: uniqueResults.output}, null, 4));
                         cmdUI.promptUniqifyAction(actions);
