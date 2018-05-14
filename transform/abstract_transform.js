@@ -50,7 +50,7 @@ class AbstractTransform
         this.overview = [];
         this.transactions = this.source.map(this.clean);
 
-        // clean adds a 'sourceKey' property to the objects
+        // this.clean() adds a 'sourceKey' property to the objects
         // for use in creating the overview of changes to the source.
         // remove it before finishing.
         this.output.forEach(function(el){
@@ -65,6 +65,10 @@ class AbstractTransform
 
     // mutate data as needed returning desired structure for this record
     transform(existingObj, newObject) {
+        if (!existingObj || !existingObj._id) {
+            return newObject;
+        }
+
         newObject._id = existingObj._id;
         return Object.assign(existingObj, newObject);
     }
@@ -75,21 +79,28 @@ class AbstractTransform
     }
 
     clean(objectInstance, i) {
+        let existing;
         let keyName = this.objectKeyName(objectInstance);
-        let existing = this.findByIdentity(objectInstance); // calls child.identify
+        let existingKey = this.findByIdentity(objectInstance); // calls child.identify
+        if (existingKey >= 0) {
+            existing = this.output[existingKey];
+        }
+
         objectInstance = this.transform(existing, objectInstance); // eg.: child.transform
         objectInstance.sourceKey = i;
 
         if (typeof existing === 'object') {
             // record event on source index
-            this.overview[existing.sourceKey] = STR_REM + this.objectKeyName(existing);
+            this.overview[existingKey] = STR_REM + this.objectKeyName(existing);
             this.overview[i] = STR_OVER + this.objectKeyName(objectInstance);
 
+            let log = 'Updated '+ keyName + '\n'+ new SimpleDiff(existing, objectInstance);
+
             // execute update transaction
-            this.update(existing, objectInstance);
+            this.update(existingKey, existing, objectInstance);
 
             // log transaction
-            return 'Updated '+ keyName + '\n'+ new SimpleDiff(existing, objectInstance);
+            return log;
 
         } else {
             // record event on source index
@@ -105,20 +116,18 @@ class AbstractTransform
 
     findByIdentity(objA) {
         let main = this;
-        let match = this.output.find(function(objB){
+        return this.output.findIndex(function(objB, i){
             return main.identify(objA, objB);
         });
-
-        return match || false;
     }
 
     insert(data) {
         this.output.push(data);
     }
 
-    update(tgt, data) {
-        // todo: update on newer or matching date
-        // todo: warn on overwrite of key-fields (_id, email)
+    update(key, tgt, data) {
+        // todo: warn on overwrite of key-fields (_id, email) OOS for Challenge
+        this.output[key] = Object.assign(tgt, data);
     }
 }
 

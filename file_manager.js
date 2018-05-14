@@ -19,8 +19,15 @@ class FileManager
         });
     }
 
-    static writeResult(path, data) {
+    static writeResult(path, data, done) {
+        fs.writeFile(path, JSON.stringify(data), function(e) {
+            if(e) {
+                cmdUI.exit(e.message || 'Error writing output data.');
+            }
 
+            cmdUI.message('Output written to '+ path);
+            done();
+        });
     }
 }
 

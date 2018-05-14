@@ -10,9 +10,18 @@ class LeadsTransform extends AbstractTransform
 
     // mutate data, return desired
     transform(existingObj, newObject) {
-        // todo: handle date-checking
-        // todo: ensure overwrite of key-fields on new or eq date (WARN USER)
-        return newObject;
+        if (!existingObj || !existingObj.entryDate) {
+            return newObject;
+        }
+
+        const existDate = new Date(existingObj.entryDate);
+        const newDate = new Date(newObject.entryDate);
+
+        if (existDate - newDate <= 0) {
+            return newObject;
+        }
+
+        return existingObj;
     }
 
     // are these two instances of the same record?

@@ -47,6 +47,7 @@ Usage: command [options] <inputFile> [outputFile]
 - leads objects must have:
     - _id
     - email
+    - entryDate in [ISO9601](http://www.ecma-international.org/ecma-262/5.1/#sec-15.9.1.15) format
 
 ### outputFile Requirements:
 - Must be an existing directory.

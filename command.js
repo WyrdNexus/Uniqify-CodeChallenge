@@ -1,5 +1,6 @@
 const program = require('commander');
 const app = require('./app');
+const defaultOutputFile = 'unique_leads.json';
 
 program
     .version(require('./package.json').version)
@@ -7,7 +8,7 @@ program
     .arguments('<inputFile> [outputFile]')
     .action((inputFile, outputFile) => {
         inputPath = inputFile;
-        outputPath = outputFile || inputFile.substring(0,inputFile.lastIndexOf("/")+1);
+        outputPath = outputFile || inputFile.substring(0,inputFile.lastIndexOf("/")+1) + defaultOutputFile;
     });
 
 program.parse(process.argv);

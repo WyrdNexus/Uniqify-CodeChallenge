@@ -24,8 +24,12 @@ class App
                         cmdUI.promptUniqifyAction(actions);
                     },
                     write_output_file: () => {
-                        fileManager.writeResult(outputFile,uniqueResults.output);
-                        cmdUI.exit('Complete', 0);
+                        const finalData = {
+                            leads: uniqueResults.output
+                        };
+                        fileManager.writeResult(outputFile,finalData, function(){
+                            cmdUI.exit('Complete', 0);
+                        });
                     },
                 };
 

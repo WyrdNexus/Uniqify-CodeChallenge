@@ -47,14 +47,14 @@ class CmdUI
                     'Write Output File'
                 ],
                 filter: function(val) {
-                    return val.toLowerCase().replace(' ', '_');
+                    return val.toLowerCase().replace(/\s/g, '_');
                 }
             }])
             .then(answer => {
                 if (answer[pName] && handlers[answer[pName]]) {
                     handlers[answer[pName]]();
                 } else {
-                    throw new ReferenceError('Unhandled choice '+answer[pName]+' in '+ pName);
+                    throw new ReferenceError('Unhandled choice '+answer[pName]+' in cmdUI:'+ pName);
                 }
             });
     }
