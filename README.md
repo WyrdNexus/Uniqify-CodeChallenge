@@ -23,7 +23,7 @@ Please implement as a command-line java program, or a javascript program.
 Requires [Node.js](https://nodejs.org/) and [git](https://git-scm.com/)
 
 ```
-> git clone
+> git clone https://github.com/WyrdNexus/Uniqify-CodeChallenge
 > npm install
 ```
 
